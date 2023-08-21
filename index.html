@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz-app</title>
+    <style>
+        * {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.app {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background: black;
+    width: 90%;
+    max-width: 600px;
+    border-radius: 10px;
+    padding: 30px;
+}
+
+.app h1 {
+    font-weight: 25px;
+    font-weight: 600;
+    border-bottom: 1px solid #333;
+    padding-bottom: 30px;
+    color: aliceblue;
+}
+
+h2 {
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.quiz {
+    color: white;
+    margin: 2em;
+    font-size: 20px;
+    justify-content: right;
+}
+
+#answers button {
+    background: #323232;
+    border: none;
+    color: white;
+    width: 100%;
+    font-weight: 700;
+    height: 4em;
+    margin-bottom: 5px;
+    padding: 10px 0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+#answers button:hover:not([disabled]) {
+    background: aqua;
+    color: black;
+}
+
+#answers button:disabled {
+    cursor: no-drop;
+}
+
+#next {
+    font-size: 17px;
+    font-weight: 700;
+    margin-top: 10%;
+    margin-left: 50%;
+    transform: translate(-50%,-50%);
+    width: 8em;
+    height: 3em;
+    border: none;
+    background-color: #323232;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    display: none;
+}
+
+#answers .correct {
+    background: rgb(184, 251, 83);
+    color: black;
+}
+
+#answers .incorrect {
+    background: rgb(255, 122, 122);
+    color: black;
+}
+    </style>
+</head>
+<body>
+    <div class="app">
+        <h1>JavaScript Quiz</h1>
+        <div class="quiz">
+            <h2 id="question">Hello</h2>             
+            <div id="answers">
+                <button class="btn">Option 1</button>
+                <button class="btn">Option 2</button>
+                <button class="btn">Option 3</button>
+                <button class="btn">Option 4</button>
+            </div>
+            <button id="next">Next</button>
+        </div>
+    </div>
+    <script>
+        const questions = [
+    {
+        question: "What is the home stadium of Fc Bayern Munchen.",
+        answers: [
+            {text: "Stamford Bridge", correct: "false"},
+            {text: "Allianz stadium", correct: "false"},
+            {text: "Allianz arena", correct: "true"},
+            {text: "Santiago Bernabeu", correct: "false"}
+        ]    
+    },
+    {
+        question: "What is the largest man-made telescope.",
+        answers: [
+            {text: "Hubble", correct: "false"},
+            {text: "Galileo", correct: "false"},
+            {text: "Fermi", correct: "false"},
+            {text: "James Webb", correct: "true"}
+        ]  
+    },
+    {
+        question: "Which is the fastest car right now.",
+        answers: [
+            {text: "Bugatti Divo", correct: "false"},
+            {text: "Koenigsegg Jesko Absolut", correct: "true"},
+            {text: "Henessey Venom GT", correct: "false"},
+            {text: "Toyota Supra", correct: "false"}
+        ]  
+    },
+    {
+        question: "What is the capital of Italy.",
+        answers: [
+            {text: "Rome", correct: "true"},
+            {text: "Turin", correct: "false"},
+            {text: "Milan", correct: "false"},
+            {text: "Naples", correct: "false"}
+        ]  
+    },
+    {
+        question: "Which is the largest black hole ever discovered.",
+        answers: [
+            {text: "Sagittarius A", correct: "false"},
+            {text: "TON 618", correct: "false"},
+            {text: "IC 1101", correct: "false"},
+            {text: "NGC 6166", correct: "true"}
+        ]  
+    }
+];
+const questionElement = document.getElementById("question");
+const answerButton = document.getElementById("answers");
+const nextButton = document.getElementById("next");
+
+let currentQuestionIndex = 0;
+let score = 0;
+
+function startQuiz() {
+    currentQuestionIndex = 0;
+    score = 0;
+    nextButton.innerHTML = "Next";
+    showQuestion();
+}
+
+function showQuestion() {
+    resetState();
+    let currentQuestion = questions[currentQuestionIndex];
+    let questionNo = currentQuestionIndex + 1;
+    questionElement.innerHTML = questionNo + ". "+ currentQuestion.question;
+
+    currentQuestion.answers.forEach(answer => {
+        const button = document.createElement("button");
+        button.innerHTML = answer.text;
+        button.classList.add("btn");
+        answerButton.appendChild(button);
+        if(answer.correct) {
+            button.dataset.correct = answer.correct;
+        }
+        button.addEventListener("click",selectAnswer);
+    });
+}
+
+function resetState() {
+    next.style.display = "none";
+    while(answerButton.firstChild) {
+        answerButton.removeChild(answerButton.firstChild);
+    }
+}
+
+function selectAnswer(e) {
+    const selectedBtn = e.target;
+    const isCorrect = selectedBtn.dataset.correct === "true";
+    if(isCorrect) {
+        selectedBtn.classList.add("correct");
+        score++;
+    }
+    else {
+        selectedBtn.classList.add("incorrect");
+    }
+    Array.from(answerButton.children).forEach(button => {
+        if(button.dataset.correct === "true") {
+            button.classList.add("correct");
+        }
+        button.disabled = true;
+    });
+    nextButton.style.display = "block";
+}
+
+function showScore() {
+    resetState();
+    questionElement.innerHTML = `You scored ${score} out of ${questions.length}!`;
+    nextButton.innerHTML = "Play Again";
+    nextButton.style.display = "block";
+}
+
+function handleNextButton() {
+    currentQuestionIndex++;
+    if(currentQuestionIndex < questions.length) {
+        showQuestion();
+    }
+    else {
+        showScore();
+    }
+}
+
+nextButton.addEventListener("click",() => {
+    if(currentQuestionIndex < questions.length) {
+        handleNextButton();
+    }
+    else {
+        startQuiz();
+    }
+});
+
+startQuiz(); 
+    </script>
+</body>
+</html>
