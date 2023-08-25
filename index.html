@@ -7,89 +7,94 @@
     <title>Quiz-app</title>
     <style>
         * {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background: linear-gradient(0.1turn,#b4fc81,#26fffb);
+        }
 
-.app {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    background: black;
-    width: 90%;
-    max-width: 600px;
-    border-radius: 10px;
-    padding: 30px;
-}
+        .app {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            background: rgba(0,0,0,0.4);
+            width: 90%;
+            max-width: 600px;
+            border-radius: 10px;
+            padding: 30px;
+        }
 
-.app h1 {
-    font-weight: 25px;
-    font-weight: 600;
-    border-bottom: 1px solid #333;
-    padding-bottom: 30px;
-    color: aliceblue;
-}
+        .app h1 {
+            font-weight: 25px;
+            font-weight: 600;
+            border-bottom: 1px solid #333;
+            padding-bottom: 30px;
+            color: aliceblue;
+        }
 
-h2 {
-    font-size: 18px;
-    font-weight: 800;
-}
+        h2 {
+            font-size: 18px;
+            font-weight: 800;
+        }
 
-.quiz {
-    color: white;
-    margin: 2em;
-    font-size: 20px;
-    justify-content: right;
-}
+        .quiz {
+            color: rgb(239, 239, 239);
+            margin: 2em;
+            font-size: 20px;
+            justify-content: right;
+        }
 
-#answers button {
-    background: #323232;
-    border: none;
-    color: white;
-    width: 100%;
-    font-weight: 700;
-    height: 4em;
-    margin-bottom: 5px;
-    padding: 10px 0;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.3s;
-}
+        #answers button {
+            background: rgba(255,255,255,0.4);
+            border: none;
+            color: white;
+            width: 100%;
+            font-weight: 700;
+            height: 4em;
+            margin-bottom: 5px;
+            padding: 10px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
 
-#answers button:hover:not([disabled]) {
-    background: aqua;
-    color: black;
-}
+        #answers button:hover:not([disabled]) {
+            background: aqua;
+            box-shadow: 0 0.5px 5px black;
+            color: black;
+        }
 
-#answers button:disabled {
-    cursor: no-drop;
-}
+        #answers button:disabled {
+            cursor: no-drop;
+        }
 
-#next {
-    font-size: 17px;
-    font-weight: 700;
-    margin-top: 10%;
-    margin-left: 50%;
-    transform: translate(-50%,-50%);
-    width: 8em;
-    height: 3em;
-    border: none;
-    background-color: #323232;
-    color: white;
-    border-radius: 4px;
-    cursor: pointer;
-    display: none;
-}
+        #next {
+            font-size: 17px;
+            font-weight: 700;
+            margin-top: 10%;
+            margin-left: 50%;
+            transform: translate(-50%,-50%);
+            width: 8em;
+            height: 3em;
+            border: none;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid black;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            display: none;
+        }
 
-#answers .correct {
-    background: rgb(184, 251, 83);
-    color: black;
-}
+        #answers .correct {
+            background: rgb(184, 251, 83);
+            color: black;
+        }
 
-#answers .incorrect {
-    background: rgb(255, 122, 122);
-    color: black;
-}
+        #answers .incorrect {
+            background: rgb(255, 122, 122);
+            color: black;
+        }
     </style>
 </head>
 <body>
@@ -164,7 +169,7 @@ let score = 0;
 function startQuiz() {
     currentQuestionIndex = 0;
     score = 0;
-    nextButton.innerHTML = "Next";
+    nextButton.innerHTML = "NEXT";
     showQuestion();
 }
 
@@ -187,7 +192,7 @@ function showQuestion() {
 }
 
 function resetState() {
-    next.style.display = "none";
+    nextButton.style.display = "none";
     while(answerButton.firstChild) {
         answerButton.removeChild(answerButton.firstChild);
     }
@@ -214,8 +219,8 @@ function selectAnswer(e) {
 
 function showScore() {
     resetState();
-    questionElement.innerHTML = `You scored ${score} out of ${questions.length}!`;
-    nextButton.innerHTML = "Play Again";
+    questionElement.innerHTML = `Your score is ${score} out of ${questions.length}!`;
+    nextButton.innerHTML = "Another turn?";
     nextButton.style.display = "block";
 }
 
